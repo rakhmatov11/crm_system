@@ -6,9 +6,11 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -55,15 +57,14 @@ public class User extends AbsEntity implements UserDetails {
 
         @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-//        Collection<GrantedAuthority> authority = new HashSet<>();
+        Collection<GrantedAuthority> authority = new HashSet<>();
 //        for (Permission permission : permissions) {
 //            authority.add(new SimpleGrantedAuthority(permission.getPermissionName().name()));
 //        }
-//        for (Role role : roles) {
-//           authority.add(new SimpleGrantedAuthority(role.getRoleName().name()));
-//        }
-//        return authority;
-            return null;
+        for (Role role : roles) {
+           authority.add(new SimpleGrantedAuthority(role.getRoleName().name()));
+        }
+        return authority;
     }
     @Override
     public String getUsername() {
